@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Post | CyberSec Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #00ff00;
+            --secondary: #005500;
+            --dark: #111111;
+            --darker: #080808;
+            --light: #cccccc;
+            --danger: #ff3333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            background-image: 
+                linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)),
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><text x="0" y="50" font-family="monospace" font-size="10" fill="rgba(0,80,0,0.3)">01010101 01010101 01010101 01010101 01010101 01010101 01010101 01010101 01010101 01010101</text></svg>');
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--darker);
+            padding: 1rem;
+            border-bottom: 1px solid var(--secondary);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            color: var(--primary);
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            color: var(--light);
+        }
+
+        .logo::before {
+            content: "root@cybersec:~# ";
+            font-size: 1rem;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 1.5rem;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            transform: scaleX(1);
+        }
+
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        /* Blog Post Content */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .blog-post-full {
+            background-color: var(--darker);
+            border: 1px solid var(--secondary);
+            border-radius: 5px;
+            padding: 2rem;
+        }
+
+        .blog-post-full h1 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .post-meta {
+            display: flex;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: #777;
+            gap: 1rem;
+        }
+
+        .post-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--secondary);
+        }
+
+        .post-content {
+            line-height: 1.7;
+        }
+
+        .post-content h2,
+        .post-content h3 {
+            color: var(--primary);
+            margin: 1.5rem 0 1rem;
+        }
+
+        .post-content p {
+            margin-bottom: 1rem;
+        }
+
+        .post-content ul {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+
+        .post-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .post-tags {
+            margin: 2rem 0;
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: rgba(0, 255, 0, 0.1);
+            color: var(--primary);
+            padding: 0.3rem 0.6rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+        }
+
+        .back-to-blog {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .back-to-blog:hover {
+            text-decoration: underline;
+        }
+
+        .back-to-blog::before {
+            content: "←";
+            margin-right: 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--darker);
+            padding: 2rem 1rem;
+            border-top: 1px solid var(--secondary);
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .social-links a {
+            color: var(--light);
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--primary);
+        }
+
+        .copyright {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--secondary);
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background-color: var(--darker);
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem 0;
+                transition: left 0.3s;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .nav-links li {
+                margin: 1rem 0;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .blog-post-full {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Hacking Terminal Effect */
+        .matrix-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.05;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix Background Effect -->
+    <canvas id="matrix" class="matrix-effect"></canvas>
+
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="logo">CyberSec<span>Hub</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="blogs.html">Blog</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+            <button class="menu-toggle" id="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Blog Post Content -->
+    <div class="container">
+        <article class="blog-post-full" id="post-content">
+            <!-- Content will be loaded by JavaScript -->
+        </article>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="social-links">
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                
+            </div>
+            <p>CyberSec Hub - Ethical Hacking & Security Blog</p>
+            <div class="copyright">
+                &copy; 2023 CyberSec Hub. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Matrix Background Effect
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const binary = '01';
+        const alphabet = binary;
+
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+
+        const rainDrops = [];
+
+        for (let x = 0; x < columns; x++) {
+            rainDrops[x] = 1;
+        }
+
+        const draw = () => {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#0F0';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        };
+
+        setInterval(draw, 30);
+
+        // Responsive Menu Toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        if (menuToggle && navLinks) {
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+
+            // Close menu when clicking on a link
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                });
+            });
+        }
+
+        // Load the blog post content
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the post ID from URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = parseInt(urlParams.get('id'));
+            
+            // Sample blog data (should match your main blog data)
+            const blogPosts = [
+                {
+                    id: 1,
+                    title: "Getting Started with Penetration Testing",
+                    date: "June 15, 2023",
+                    author: "John Doe",
+                    excerpt: "Learn the fundamentals of penetration testing...",
+                    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+                    tags: ["Penetration Testing", "Kali Linux", "Ethical Hacking"],
+                    content: `
+                        <h3>Introduction to Penetration Testing</h3>
+                        <p>Penetration testing, or pen testing, is the practice of testing a computer system, network or web application to find security vulnerabilities that an attacker could exploit...</p>
+                        
+                        <h3>Setting Up Your Lab</h3>
+                        <p>To get started with penetration testing, you'll need to set up a safe environment to practice your skills...</p>
+                        <ul>
+                            <li>Install Kali Linux on a virtual machine</li>
+                            <li>Set up vulnerable practice systems (like Metasploitable)</li>
+                            <li>Learn basic Linux commands</li>
+                        </ul>
+                        
+                        <h3>Essential Tools</h3>
+                        <p>Here are some essential tools every penetration tester should know:</p>
+                        <ul>
+                            <li>Nmap - Network scanning</li>
+                            <li>Metasploit - Exploitation framework</li>
+                            <li>Burp Suite - Web application testing</li>
+                            <li>Wireshark - Network protocol analysis</li>
+                        </ul>
+                    `
+                },
+                { 
+                    id: 2,
+                    title: "Securing Your Network: Best Practices",
+                    date: "May 28, 2023",
+                    author: "Jane Smith",
+                    excerpt: "Discover the most effective strategies for securing your network infrastructure against common threats.",
+                    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+                    tags: ["Network Security", "Firewalls", "IDS/IPS"],
+                    content: `
+                        <h3>Network Security Fundamentals</h3>
+                        <p>Network security is crucial for protecting sensitive data and maintaining system availability. Key concepts include:</p>
+                        <ul>
+                            <li>Confidentiality - Ensuring only authorized users can access data</li>
+                            <li>Integrity - Maintaining data accuracy and consistency</li>
+                            <li>Availability - Ensuring systems are accessible when needed</li>
+                        </ul>
+                        
+                        <h3>Essential Security Measures</h3>
+                        <p>Implement these security measures to protect your network:</p>
+                        <ul>
+                            <li><strong>Firewalls</strong>: Configure proper inbound and outbound rules</li>
+                            <li><strong>Intrusion Detection/Prevention Systems</strong>: Monitor for suspicious activity</li>
+                            <li><strong>Network Segmentation</strong>: Isolate critical systems</li>
+                            <li><strong>VPN</strong>: Secure remote access</li>
+                            <li><strong>Regular Updates</strong>: Patch all systems and software</li>
+                        </ul>
+                    `
+                },
+                {
+                    id: 3,
+                    title: "Securing Your Network: Best Practices",
+                    date: "May 28, 2023",
+                    author: "Jane Smith",
+                    excerpt: "Discover the most effective strategies for securing your network infrastructure against common threats.",
+                    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+                    tags: ["Network Security", "Firewalls", "IDS/IPS"],
+                    content: `
+                        <h3>Network Security Fundamentals</h3>
+                        <p>Network security is crucial for protecting sensitive data and maintaining system availability. Key concepts include:</p>
+                        <ul>
+                            <li>Confidentiality - Ensuring only authorized users can access data</li>
+                            <li>Integrity - Maintaining data accuracy and consistency</li>
+                            <li>Availability - Ensuring systems are accessible when needed</li>
+                        </ul>
+                        
+                        <h3>Essential Security Measures</h3>
+                        <p>Implement these security measures to protect your network:</p>
+                        <ul>
+                            <li><strong>Firewalls</strong>: Configure proper inbound and outbound rules</li>
+                            <li><strong>Intrusion Detection/Prevention Systems</strong>: Monitor for suspicious activity</li>
+                            <li><strong>Network Segmentation</strong>: Isolate critical systems</li>
+                            <li><strong>VPN</strong>: Secure remote access</li>
+                            <li><strong>Regular Updates</strong>: Patch all systems and software</li>
+                        </ul>
+                    `
+                }
+                // Add your other blog posts here with full content
+            ];
+            
+            // Find the requested post
+            const post = blogPosts.find(p => p.id === postId);
+            
+            if (post) {
+                // Update the page title
+                document.title = `${post.title} | CyberSec Hub`;
+                
+                // Display the post content
+                const postContent = document.getElementById('post-content');
+                postContent.innerHTML = `
+                    <h1>${post.title}</h1>
+                    <div class="post-meta">
+                        <span><i class="far fa-calendar-alt"></i> ${post.date}</span>
+                        <span><i class="far fa-user"></i> ${post.author}</span>
+                    </div>
+                    <img src="${post.image}" alt="${post.title}" class="post-image">
+                    <div class="post-content">
+                        ${post.content}
+                    </div>
+                    <div class="post-tags">
+                        ${post.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                    <a href="blogs.html" class="back-to-blog">Back to all posts</a>
+                `;
+            } else {
+                // If post not found, redirect to blog listing
+                window.location.href = 'blogs.html';
+            }
+        });
+
+        // Resize canvas when window is resized
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
